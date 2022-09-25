@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.28.5">
+    <meta name="project" content="mockex v0.1.0">
+
+    <title>Mockex.MockWebsocketServerBehaviour — mockex v0.1.0</title>
+    <link rel="stylesheet" href="dist/elixir-64c5e2b63575bddb1c5b.css" />
+
+    <script src="dist/sidebar_items-1c0e7fe49f.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-b5f3440501744dc8be3d.js"></script>
+
+
+  </head>
+  <body data-type="modules">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="main">
+
+
+<section class="sidebar">
+  <button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+  </button>
+
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
+    </button>
+    <label class="search-label">
+      <p class="sr-only">Search</p>
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+
+    <div class="sidebar-projectDetails">
+      <a href="api-reference.html" class="sidebar-projectName" translate="no">
+mockex
+      </a>
+      <strong class="sidebar-projectVersion" translate="no">
+        v0.1.0
+      </strong>
+    </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+    </ul>
+  </div>
+
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <output role="status" id="toast"></output>
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>
+<button class="settings display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
+
+
+  <span translate="no">Mockex.MockWebsocketServerBehaviour</span> <small>behaviour</small>
+  <small class="app-vsn" translate="no">(mockex v0.1.0)</small>
+
+</h1>
+
+
+  <section id="moduledoc">
+<p>Behaviour for implementing custom mock websocket
+server for testing purposed.</p><h2 id="module-example" class="section-heading">
+  <a href="#module-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">example</p>
+  </a>
+  Example
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="c1"># create a new file test/mock_ws.ex to define the Mock Websocket Server</span><span class="w">
+</span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">CustomMockWsServer</span><span class="w"> </span><span class="k" data-group-id="5209319652-1">do</span><span class="w">
+  </span><span class="kn">import</span><span class="w"> </span><span class="nc">Mockex</span><span class="w">
+  </span><span class="na">@behaviour</span><span class="w"> </span><span class="nc">Mockex.MockWebsocketServerBehaviour</span><span class="w">
+
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">start_server</span><span class="w"> </span><span class="k" data-group-id="5209319652-2">do</span><span class="w">
+    </span><span class="n">start_mock_ws</span><span class="p" data-group-id="5209319652-3">(</span><span class="k" data-group-id="5209319652-4">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">handle_incoming_messages</span><span class="p" data-group-id="5209319652-5">(</span><span class="p" data-group-id="5209319652-5">)</span><span class="w"> </span><span class="k" data-group-id="5209319652-4">end</span><span class="p" data-group-id="5209319652-3">)</span><span class="w">
+  </span><span class="k" data-group-id="5209319652-2">end</span><span class="w">
+
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_incoming_messages</span><span class="w"> </span><span class="k" data-group-id="5209319652-6">do</span><span class="w">
+    </span><span class="n">add_listeners</span><span class="w"> </span><span class="k" data-group-id="5209319652-7">do</span><span class="w">
+      </span><span class="c1"># sample custom incoming message and custom response</span><span class="w">
+      </span><span class="c1"># caller refers to the client&#39;s PID - sent with self() from client side</span><span class="w">
+      </span><span class="p" data-group-id="5209319652-8">{</span><span class="ss">:hi_from_client</span><span class="p">,</span><span class="w"> </span><span class="n">caller</span><span class="p" data-group-id="5209319652-8">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="n">send</span><span class="p" data-group-id="5209319652-9">(</span><span class="n">caller</span><span class="p">,</span><span class="w"> </span><span class="ss">:hi_from_server</span><span class="p" data-group-id="5209319652-9">)</span><span class="w">
+
+      </span><span class="p" data-group-id="5209319652-10">{</span><span class="ss">:hi_from_client2</span><span class="p">,</span><span class="w"> </span><span class="n">caller</span><span class="p" data-group-id="5209319652-10">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="n">send</span><span class="p" data-group-id="5209319652-11">(</span><span class="n">caller</span><span class="p">,</span><span class="w"> </span><span class="ss">:hi_from_server2</span><span class="p" data-group-id="5209319652-11">)</span><span class="w">
+
+      </span><span class="p" data-group-id="5209319652-12">{</span><span class="ss">:hi_from_client3</span><span class="p">,</span><span class="w"> </span><span class="n">caller</span><span class="p" data-group-id="5209319652-12">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="n">send</span><span class="p" data-group-id="5209319652-13">(</span><span class="n">caller</span><span class="p">,</span><span class="w"> </span><span class="ss">:hi_from_server3</span><span class="p" data-group-id="5209319652-13">)</span><span class="w">
+
+      </span><span class="c1"># a more generic example</span><span class="w">
+      </span><span class="p" data-group-id="5209319652-14">{</span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">caller</span><span class="p" data-group-id="5209319652-14">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="n">send</span><span class="p" data-group-id="5209319652-15">(</span><span class="n">caller</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p" data-group-id="5209319652-15">)</span><span class="w">
+
+      </span><span class="n">default</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="nc">IO</span><span class="o">.</span><span class="n">puts</span><span class="w"> </span><span class="s">&quot;error&quot;</span><span class="w">
+    </span><span class="k" data-group-id="5209319652-7">end</span><span class="w">
+
+    </span><span class="n">handle_incoming_messages</span><span class="p" data-group-id="5209319652-16">(</span><span class="p" data-group-id="5209319652-16">)</span><span class="w"> </span><span class="c1"># to keep listener open</span><span class="w">
+  </span><span class="k" data-group-id="5209319652-6">end</span><span class="w">
+</span><span class="k" data-group-id="5209319652-1">end</span><span class="w">
+
+</span><span class="c1"># in the test/test_helper.exs, add the following line at the top of the file</span><span class="w">
+
+</span><span class="nc">Code</span><span class="o">.</span><span class="n">require_file</span><span class="p" data-group-id="5209319652-17">(</span><span class="s">&quot;test/mock_ws.ex&quot;</span><span class="p" data-group-id="5209319652-17">)</span><span class="w">
+
+</span><span class="c1"># in the testsuite</span><span class="w">
+</span><span class="c1"># start the server during each test case execution</span><span class="w">
+
+</span><span class="n">setup</span><span class="w"> </span><span class="k" data-group-id="5209319652-18">do</span><span class="w">
+  </span><span class="p" data-group-id="5209319652-19">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">ws_pid</span><span class="p" data-group-id="5209319652-19">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">CustomMockWsServer</span><span class="o">.</span><span class="n">start_server</span><span class="p" data-group-id="5209319652-20">(</span><span class="p" data-group-id="5209319652-20">)</span><span class="w">
+  </span><span class="p" data-group-id="5209319652-21">%{</span><span class="ss">ws_pid</span><span class="p">:</span><span class="w"> </span><span class="n">ws_pid</span><span class="p" data-group-id="5209319652-21">}</span><span class="w">
+</span><span class="k" data-group-id="5209319652-18">end</span><span class="w">
+
+</span><span class="n">test</span><span class="w"> </span><span class="s">&quot;test ws client push event to the CustomMockWsServer&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5209319652-22">%{</span><span class="ss">ws_pid</span><span class="p">:</span><span class="w"> </span><span class="n">ws_pid</span><span class="p" data-group-id="5209319652-22">}</span><span class="w"> </span><span class="k" data-group-id="5209319652-23">do</span><span class="w">
+  </span><span class="n">use_mock</span><span class="w"> </span><span class="nc">SocketClient</span><span class="p">,</span><span class="w">
+    </span><span class="ss">push</span><span class="p">:</span><span class="w"> </span><span class="k" data-group-id="5209319652-24">fn</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">push_to_ws</span><span class="p" data-group-id="5209319652-25">(</span><span class="n">ws_pid</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5209319652-26">{</span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">self</span><span class="p" data-group-id="5209319652-27">(</span><span class="p" data-group-id="5209319652-27">)</span><span class="p" data-group-id="5209319652-26">}</span><span class="p" data-group-id="5209319652-25">)</span><span class="w"> </span><span class="k" data-group-id="5209319652-24">end</span><span class="w"> </span><span class="k" data-group-id="5209319652-28">do</span><span class="w">
+    </span><span class="nc">SocketClient</span><span class="o">.</span><span class="n">push</span><span class="p" data-group-id="5209319652-29">(</span><span class="ss">:hi_from_client</span><span class="p" data-group-id="5209319652-29">)</span><span class="w">
+    </span><span class="n">assert_receive</span><span class="w"> </span><span class="ss">:hi_from_server</span><span class="p">,</span><span class="w"> </span><span class="mi">2000</span><span class="w"> </span><span class="c1"># timeout is 2000ms</span><span class="w">
+  </span><span class="k" data-group-id="5209319652-28">end</span><span class="w">
+</span><span class="k" data-group-id="5209319652-23">end</span><span class="w">
+
+</span><span class="c1">#### OR ####</span><span class="w">
+
+</span><span class="c1"># start the server for use throughout all testcases</span><span class="w">
+
+</span><span class="n">setup_all</span><span class="w"> </span><span class="k" data-group-id="5209319652-30">do</span><span class="w">
+  </span><span class="p" data-group-id="5209319652-31">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">ws_pid</span><span class="p" data-group-id="5209319652-31">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">CustomMockWsServer</span><span class="o">.</span><span class="n">start_server</span><span class="p" data-group-id="5209319652-32">(</span><span class="p" data-group-id="5209319652-32">)</span><span class="w">
+  </span><span class="p" data-group-id="5209319652-33">%{</span><span class="ss">ws_pid</span><span class="p">:</span><span class="w"> </span><span class="n">ws_pid</span><span class="p" data-group-id="5209319652-33">}</span><span class="w">
+</span><span class="k" data-group-id="5209319652-30">end</span><span class="w">
+
+</span><span class="n">test</span><span class="w"> </span><span class="s">&quot;test ws client push event to the CustomMockWsServer&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5209319652-34">%{</span><span class="ss">ws_pid</span><span class="p">:</span><span class="w"> </span><span class="n">ws_pid</span><span class="p" data-group-id="5209319652-34">}</span><span class="w"> </span><span class="k" data-group-id="5209319652-35">do</span><span class="w">
+  </span><span class="n">use_mock</span><span class="w"> </span><span class="nc">SocketClient</span><span class="p">,</span><span class="w">
+    </span><span class="ss">push</span><span class="p">:</span><span class="w"> </span><span class="k" data-group-id="5209319652-36">fn</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">push_to_ws</span><span class="p" data-group-id="5209319652-37">(</span><span class="n">ws_pid</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5209319652-38">{</span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">self</span><span class="p" data-group-id="5209319652-39">(</span><span class="p" data-group-id="5209319652-39">)</span><span class="p" data-group-id="5209319652-38">}</span><span class="p" data-group-id="5209319652-37">)</span><span class="w"> </span><span class="k" data-group-id="5209319652-36">end</span><span class="w"> </span><span class="k" data-group-id="5209319652-40">do</span><span class="w">
+
+    </span><span class="c1"># push to server 1</span><span class="w">
+    </span><span class="nc">SocketClient</span><span class="o">.</span><span class="n">push</span><span class="p" data-group-id="5209319652-41">(</span><span class="ss">:hi_from_client</span><span class="p" data-group-id="5209319652-41">)</span><span class="w">
+    </span><span class="n">assert_receive</span><span class="w"> </span><span class="ss">:hi_from_server</span><span class="p">,</span><span class="w"> </span><span class="mi">2000</span><span class="w"> </span><span class="c1"># timeout is 2000ms</span><span class="w">
+
+    </span><span class="c1"># push to server 2</span><span class="w">
+    </span><span class="nc">SocketClient</span><span class="o">.</span><span class="n">push</span><span class="p" data-group-id="5209319652-42">(</span><span class="ss">:hi_from_client2</span><span class="p" data-group-id="5209319652-42">)</span><span class="w">
+    </span><span class="n">assert_receive</span><span class="w"> </span><span class="ss">:hi_from_server2</span><span class="p">,</span><span class="w"> </span><span class="mi">2000</span><span class="w"> </span><span class="c1"># timeout is 2000ms</span><span class="w">
+
+    </span><span class="c1"># push to server 3</span><span class="w">
+    </span><span class="nc">SocketClient</span><span class="o">.</span><span class="n">push</span><span class="p" data-group-id="5209319652-43">(</span><span class="ss">:hi_from_client3</span><span class="p" data-group-id="5209319652-43">)</span><span class="w">
+    </span><span class="n">assert_receive</span><span class="w"> </span><span class="ss">:hi_from_server3</span><span class="p">,</span><span class="w"> </span><span class="mi">2000</span><span class="w"> </span><span class="c1"># timeout is 2000ms</span><span class="w">
+  </span><span class="k" data-group-id="5209319652-40">end</span><span class="w">
+</span><span class="k" data-group-id="5209319652-35">end</span></code></pre>
+  </section>
+
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Summary
+    </h1>
+
+  <div class="summary-callbacks summary">
+    <h2>
+      <a href="#callbacks">Callbacks</a>
+    </h2>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#c:handle_incoming_messages/0" translate="no">handle_incoming_messages()</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#c:start_server/0" translate="no">start_server()</a>
+
+        </div>
+
+      </div>
+
+  </div>
+
+  </section>
+
+
+  <section id="callbacks" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#callbacks">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
+Callbacks
+    </h1>
+    <div class="callbacks-list">
+<section class="detail" id="c:handle_incoming_messages/0">
+
+  <div class="detail-header">
+    <a href="#c:handle_incoming_messages/0" class="detail-link" title="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature" translate="no">handle_incoming_messages()</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> handle_incoming_messages() :: nil</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="c:start_server/0">
+
+  <div class="detail-header">
+    <a href="#c:start_server/0" class="detail-link" title="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature" translate="no">start_server()</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> start_server() :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+
+    </div>
+  </section>
+
+      <footer class="footer">
+
+        <p>
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.5) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>
